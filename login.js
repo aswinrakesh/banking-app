@@ -18,15 +18,35 @@ var conn = mysql.createConnection(
 	}
 );
 
+conn.connect(function (err){
+  if(err){
+    return console.error('error:', + err.message);
+  }
+  console.log('Connected to the MySQL server.');
+
+})
+
+
 app.get('/:username',function(req,resp){
-	conn.query("SELECT * FROM User WHERE username = ?",[req.params.username],
-		function(error,rows,fields){	
+	conn.query('SELECT * FROM User WHERE username = ?',[req.params.username],
+		function(error,rows,fields){
 			if(!!error)
 				console.log('Error');
 			else{
-				resp.send(rows);
-			}		
-	});		
+				resp.json(rows);
+			}
+	});
 })
 
+app.post('/',function(req,resp){
+	console.log(req.body);
+	conn.query('UPDATE User SET balance = ? WHERE username = ?',[req.body.balance,req.body.username],
+		function(error,rows,fields){
+			if(!!error)
+				console.log('Error');
+			else{
+				resp.json(rows);
+			}
+	});
+})
 app.listen(4000);
