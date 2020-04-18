@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'screen2.dart';
 
 void main()=>runApp(MyApp());
@@ -27,18 +29,26 @@ class _LoginState extends State<Login> {
   TextEditingController pass=TextEditingController();
 
   Future<String> getlogin(String user)async{
-    var url="http://10.0.2.2:4000/"+user;
-    http.Response response = await http.get(Uri.encodeFull(url),headers: {"Accept":"application/json"});
+    final uri = "10.0.2.2:4000";
+    final path = "/"+user;
+    final url= Uri.http(uri,path);
+    print(url);
+
+    Response response = await http.get(url,headers: {"Accept":"application/json"});
+    print(response.headers);
     setState(() {
       dataJson = json.decode(response.body);
       print(dataJson);
     });
+    return " Successful";
   }
 
-  verifylogin(String username,String password,var data){
+  void verifylogin(String username,String password,var data){
+    //String name = data[0]['username'];
+    //String bal = data[0] ['balance'];
     if(data[0]['password']==password){
       Navigator.push(context,MaterialPageRoute(
-        builder: (BuildContext context) => MyApp1(),
+        builder: (BuildContext context) => MyApp1(text : data),
       )
       );
     }
@@ -59,8 +69,8 @@ class _LoginState extends State<Login> {
             TextField(
               controller: pass,
               decoration: InputDecoration(
-                hintText: 'Password',
-                icon: Icon(Icons.lock)
+                  hintText: 'Password',
+                  icon: Icon(Icons.lock)
               ),
               autofocus: false,
               obscureText: true,
@@ -69,7 +79,10 @@ class _LoginState extends State<Login> {
               child: Text('SIGN IN'),
               onPressed: (){
                 getlogin(user.text);
-                verifylogin(user.text,pass.text,dataJson);
+                setState(() {
+                  verifylogin(user.text,pass.text,dataJson);
+                });
+
               },
             )
           ],
@@ -78,4 +91,3 @@ class _LoginState extends State<Login> {
     );
   }
 }
-

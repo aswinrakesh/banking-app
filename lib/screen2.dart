@@ -1,30 +1,97 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
+import 'dart:convert';
 import 'main.dart';
+import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
+
 void main()=>runApp(MyApp1());
 
 
-class MyApp1 extends StatelessWidget {
+
+
+class MyApp1 extends StatefulWidget {
+  var text;
+  MyApp1({Key key, @required this.text}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Home(),
-    );
+  _MyApp1State createState() => _MyApp1State();
+}
+
+class _MyApp1State extends State<MyApp1> {
+  var user, bal;
+
+  @override
+  void initState(){
+      user = widget.text[0]['username'];
+      bal =  widget.text[0]['balance'];
+      super.initState();
   }
-}
+  TextEditingController deposit=TextEditingController();
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
 
-class _HomeState extends State<Home> {
+  int sum;
+  Future addDeposit(String dep) async {
+
+    String url = "http://10.0.2.2:4000/" ;
+    print(url);
+    sum = int.parse(bal) + int.parse(dep);
+    bal=sum.toString();
+    print(user);
+    log("$bal");
+    Map<String, String> body = {
+      "username" : widget.text[0]['username'],
+      "password" : widget.text[0]['password'],
+      "balance" : bal,
+    };
+    var r = await http.post(url, body: body);
+
+    if(r.statusCode == 200){
+      setState(() {
+      });
+    }
+
+    print(r.headers);
+    return ;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Text('${a.username} Loggged in'),
-      )),
+      body: Container(
+          padding: EdgeInsets.only(top: 50),
+        child: Column(
+          children: <Widget>[
+            Text(
+              user + " logged in...",
+              textAlign: TextAlign.center,
+            ),
+            TextField(
+              controller: deposit,
+              decoration: InputDecoration(
+              hintText: 'Amount to deposit.',
+              icon: Icon(Icons.add),
+                ),
+            ),
+            RaisedButton(
+              child: Text('Deposit'),
+              onPressed: (){
+                setState(() {
+                  addDeposit(deposit.text);
+                });
+
+              },
+            ),
+            RaisedButton(
+              child: Text('Exit App'),
+              onPressed: (){
+                setState(() {
+                  Navigator.of(context).pop();
+                });
+              },
+
+            ),
+          ],
+        )
+      ),
     );
   }
 }
