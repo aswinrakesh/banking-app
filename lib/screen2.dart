@@ -9,21 +9,22 @@ import 'loan.dart';
 void main()=>runApp(MyApp1());
 
 class MyApp1 extends StatefulWidget {
-  var text;
+   var text;
   MyApp1({Key key, @required this.text}) : super(key: key);
   @override
   _MyApp1State createState() => _MyApp1State();
 }
 
 class _MyApp1State extends State<MyApp1> {
-  var user, bal;
-
+  var user, bal,data;
   @override
   void initState(){
       user = widget.text[0]['username'];
       bal =  widget.text[0]['balance'];
+      data = widget.text;
       super.initState();
   }
+
   TextEditingController deposit=TextEditingController();
   int sum;
   Future addDeposit(String dep) async {
@@ -91,7 +92,7 @@ class _MyApp1State extends State<MyApp1> {
               onPressed: (){
                 setState(() {
                   Navigator.push(context,MaterialPageRoute(
-                    builder: (BuildContext context) => MyApp2(text:user),
+                    builder: (BuildContext context) => MyApp2(text:data),
                   )
                   );
                 });
