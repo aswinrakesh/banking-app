@@ -38,6 +38,31 @@ app.get('/:username',function(req,resp){
 	});
 })
 
+
+app.post('/loan/:username',function(req,resp){
+	//console.log(req.body);
+	conn.query('UPDATE User SET loan_principle = ? , loan_payable = ? WHERE username = ?',[req.body.loan_principle,req.body.loan_payable,req.params.username],
+		function(error,rows,fields){
+			if(!!error)
+				console.log('Error');
+			else{
+				resp.json(rows);
+			}
+	});
+})
+
+app.post('/pay/:username',function(req,resp){
+	//console.log(req.body);
+	conn.query('UPDATE User SET loan_payable = ?, loan_paid = ? WHERE username = ?',[req.body.loan_payable,req.body.loan_paid,req.params.username],
+		function(error,rows,fields){
+			if(!!error)
+				console.log('Error');
+			else{
+				resp.json(rows);
+			}
+	});
+})
+
 app.post('/',function(req,resp){
 	console.log(req.body);
 	conn.query('UPDATE User SET balance = ? WHERE username = ?',[req.body.balance,req.body.username],
