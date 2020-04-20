@@ -6,12 +6,12 @@ import 'dart:async';
 void main()=>runApp(MyApp2());
 
 
-
 class MyApp2 extends StatefulWidget {
   var text;
   MyApp2({Key key, @required this.text}) : super(key: key);  @override
   _MyApp2State createState() => _MyApp2State();
 }
+
 
 
 class _MyApp2State extends State<MyApp2> {
@@ -39,7 +39,9 @@ class _MyApp2State extends State<MyApp2> {
     week_pay=(payable/(double.parse(months.text)*4));
     String _payable=payable.toString();
     String _week_pay = week_pay.toString();
+
     String _paid = paid.toString();
+
 
 //    http.Response response = await http.get(url1,headers: {"Accept":"application/json"});
 //    var user_json=json.decode(response.body);
@@ -55,6 +57,7 @@ class _MyApp2State extends State<MyApp2> {
       "loan_principle":princ,
       "loan_payable":_payable,
       "loan_paid":_paid,
+
     };
     String _body=json.encode(body);
     final http.Response response = await http.post(url,headers:{"Content-Type": "application/json"},body:_body,);
@@ -66,7 +69,6 @@ class _MyApp2State extends State<MyApp2> {
     print(response.headers);
     return;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +99,7 @@ class _MyApp2State extends State<MyApp2> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
+
                   child: Text('Interest amounts to Rs ${interest}',style: TextStyle(fontSize: 15)),
                 ),
                 Padding(

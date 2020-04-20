@@ -82,7 +82,6 @@ class _LoginState extends State<Login> {
                 setState(() {
                   verifylogin(user.text,pass.text,dataJson);
                 });
-
               },
             )
           ],
