@@ -6,12 +6,10 @@ import 'package:http/http.dart' as http;
 import 'loan.dart';
 import 'payloan.dart';
 
-
 void main()=>runApp(MyApp1());
 
 class MyApp1 extends StatefulWidget {
   var text;
-
   MyApp1({Key key, @required this.text}) : super(key: key);
   @override
   _MyApp1State createState() => _MyApp1State();
@@ -25,7 +23,6 @@ class _MyApp1State extends State<MyApp1> {
     bal =  widget.text[0]['balance'];
     data = widget.text;
     super.initState();
-
   }
 
   TextEditingController deposit=TextEditingController();
@@ -83,14 +80,6 @@ class _MyApp1State extends State<MyApp1> {
                 },
               ),
               RaisedButton(
-                child: Text('Return to log in'),
-                onPressed: (){
-                  setState(() {
-                    Navigator.of(context).pop();
-                  });
-                },
-              ),
-              RaisedButton(
                 child: Text('Loan'),
                 onPressed: (){
                   setState(() {
@@ -111,54 +100,16 @@ class _MyApp1State extends State<MyApp1> {
                   });
                 },
               ),
+              RaisedButton(
+                child: Text('Log out'),
+                onPressed: (){
+                  setState(() {
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context)=>MyApp()));
+                  });
+                },
+              ),
             ],
           )
-        child: Column(
-          children: <Widget>[
-            Text(
-              user + " logged in...",
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              bal+" is ${user}'s current balance"
-            ),
-            TextField(
-              controller: deposit,
-              decoration: InputDecoration(
-              hintText: 'Amount to deposit.',
-              icon: Icon(Icons.add),
-                ),
-            ),
-            RaisedButton(
-              child: Text('Deposit'),
-              onPressed: (){
-                setState(() {
-                  addDeposit(deposit.text);
-                });
-
-              },
-            ),
-            RaisedButton(
-              child: Text('Return to log in'),
-              onPressed: (){
-                setState(() {
-                  Navigator.of(context).pop();
-                });
-              },
-            ),
-            RaisedButton(
-              child: Text('Loan'),
-              onPressed: (){
-                setState(() {
-                  Navigator.push(context,MaterialPageRoute(
-                    builder: (BuildContext context) => MyApp2(text:data),
-                  )
-                  );
-                });
-              },
-            )
-          ],
-        )
       ),
     );
   }
