@@ -38,6 +38,18 @@ app.get('/:username',function(req,resp){
 	});
 })
 
+app.post('/register',function(req,res){
+  var postData=req.body;
+  conn.query('INSERT INTO User SET ?',postData,function(error,rows,fields){
+    if(!!error){
+      console.log(error);
+    }
+    else{
+      res.send(JSON.stringify(rows));
+    }
+  });
+})
+
 
 app.post('/loan/:username',function(req,resp){
 	//console.log(req.body);
