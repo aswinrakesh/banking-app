@@ -2,6 +2,7 @@ import 'group_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'screen2.dart';
@@ -183,6 +184,14 @@ class _ATG extends State<ATG> {
   Navigator.push(context,MaterialPageRoute(
   builder: (BuildContext context)=>
   Group(text: null,)));
+  Fluttertoast.showToast(
+  msg: "${uname.text} has already been added to a group",
+  textColor: Colors.white,
+  toastLength: Toast.LENGTH_SHORT,
+  timeInSecForIos: 1,
+  gravity: ToastGravity.BOTTOM,
+  backgroundColor: Colors.grey,
+  );
   }
   else {
   showInSnackBar(
