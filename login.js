@@ -72,6 +72,16 @@ app.post('/register',function(req,res){
     }
   });
 })
+app.get('/',function(req,res){
+	conn.query('SELECT * FROM group_reg',function(error,rows,fields){
+		if(!!error)
+		console.log('Error');
+		else {
+			res.send(JSON.stringify(rows));
+			console.log('hi');
+		}
+	});
+})
 
 app.post('/grpreg',function(req,res){
   var postData=req.body;
@@ -87,7 +97,7 @@ app.post('/grpreg',function(req,res){
 
 // var image = {
 // 	img: fs.readFileSync("/opt/lampp/htdocs/events/uploads/liverpool.jpg",{encoding:'utf8', flag:'r'},
-// 	file_name ='Livpool'	
+// 	file_name ='Livpool'
 // )};
 
 
@@ -115,7 +125,16 @@ app.post('/loan/:username',function(req,resp){
 			}
 	});
 })
-
+app.post('/atg/:username',function(req,res){
+  conn.query('UPDATE User SET group_id = ? WHERE username = ?',[req.body.group_id,req.params.username],function(error,rows,fields){
+    if(!!error){
+      console.log(error);
+    }
+    else{
+      res.send(JSON.stringify(rows));
+    }
+  });
+})
 app.post('/pay/:username',function(req,resp){
 	//console.log(req.body);
 	conn.query('UPDATE User SET loan_payable = ?, loan_paid = ? WHERE username = ?',[req.body.loan_payable,req.body.loan_paid,req.params.username],
@@ -126,6 +145,18 @@ app.post('/pay/:username',function(req,resp){
 				resp.json(rows);
 			}
 	});
+})
+
+app.post('/migrate/:username',function(req,res){
+  var postData=req.body;
+  conn.query('UPDATE User SET group_id=? WHERE username=?',[req.body.group_id,req.body.username],function(error,rows,fields){
+    if(!!error){
+      console.log(error);
+    }
+    else{
+      res.send(JSON.stringify(rows));
+    }
+  });
 })
 
 app.post('/',function(req,resp){
@@ -140,3 +171,5 @@ app.post('/',function(req,resp){
 	});
 })
 app.listen(4000);
+
+

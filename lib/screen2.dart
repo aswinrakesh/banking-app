@@ -1,12 +1,15 @@
+import 'group_functions.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
-import 'package:image_picker/image_picker.dart';
+import 'group_functions.dart';
 import 'main.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'loan.dart';
 import 'payloan.dart';
 import 'dart:convert';
 import 'grp_reg.dart';
+import 'addtogroup.dart';
 
 
 void main()=>runApp(MyApp1(text: null,));
@@ -54,15 +57,20 @@ class _MyApp1State extends State<MyApp1> {
     return ;
   }
 
+
+
+
+  //  Navigator.push(context, MaterialPageRoute(
+//  builder: (BuildContext context) => MyApp1(text:null),
+//  ));
+
   /*Future getImage(var user)async{
     String url = "http://10.0.2.2:4000/image/"+user;
     var image = http.get(url,headers:{"Accept":"application/json"});
     String base64image;
     List<int> imagebytes = image.readAsBytesSync();
     base64image = base64Encode(imagebytes);
-
   }
-
   Future <String> uploadImg(filename, url) async{
     var request = http.MultipartRequest('POST',Uri.parse(url));
     request.files.add(
@@ -70,7 +78,6 @@ class _MyApp1State extends State<MyApp1> {
     var res = await request.send();
     return res.reasonPhrase;
   }*/
-  String state = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,10 +86,10 @@ class _MyApp1State extends State<MyApp1> {
           child: Column(
             children: <Widget>[
               Text(
-                user + " logged in...url",
+                user + " logged in...",
                 textAlign: TextAlign.center,
               ),
-              Text(bal + "is ${user}'s current balance"),
+              Text(bal + " is ${user}'s current balance"),
               TextField(
                 controller: deposit,
                 decoration: InputDecoration(
@@ -90,7 +97,7 @@ class _MyApp1State extends State<MyApp1> {
                   icon: Icon(Icons.add),
                 ),
               ),
-             /* CircleAvatar(
+              /* CircleAvatar(
                 backgroundImage: getImage(user),
               ),*/
               RaisedButton(
@@ -113,14 +120,15 @@ class _MyApp1State extends State<MyApp1> {
                   });
                 },
               ),
+
               RaisedButton(
-                child: Text('Group Register(Admin)'),
+                child: Text('Groups'),
                 onPressed: (){
-                  if(user=='adithya'){
+                  if(user=='aswin'){
                     setState(() {
                       Navigator.push(context,MaterialPageRoute(
-                          builder: (BuildContext context)=>
-                          GrpReg(text:data)
+                        builder: (BuildContext context)=>
+                            Group(text:data),
                       ));
                     });
                   }
@@ -140,7 +148,7 @@ class _MyApp1State extends State<MyApp1> {
                   });
                 },
               ),
-             /* RaisedButton(child: Text('Upload image'),
+              /* RaisedButton(child: Text('Upload image'),
               onPressed: ()async{
                 var file = await ImagePicker.pickImage(source: ImageSource.gallery);
                 var res = await uploadImg(file.path,widget.url_);

@@ -1,8 +1,10 @@
+import 'group_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'screen2.dart';
+import 'addtogroup.dart';
 void main()=>runApp(GrpReg(text:null));
 class GrpReg extends StatefulWidget {
   var text;
@@ -12,9 +14,10 @@ class GrpReg extends StatefulWidget {
 }
 
 class _GrpRegState extends State<GrpReg> {
-
+  var data;
   @override
   void initState(){
+    data = widget.text;
     super.initState();
   }
 
@@ -60,13 +63,13 @@ class _GrpRegState extends State<GrpReg> {
       "group_name":gname.text,
       "group_regno":regno.text,
       "district":district,
-      "taluk":taluk.text,
       "panchayath":panchayath.text,
+      "taluk":taluk.text,
       "block":block.text,
       "ward":ward.text
     };
     var r = await http.post(url, body: body);
-
+    print(_district);
     if(r.statusCode == 200){
       setState(() {
       });
@@ -92,7 +95,10 @@ class _GrpRegState extends State<GrpReg> {
   child: Text('Ok'),
   onPressed: () {
   register();
-//  Navigator.push(context, MaterialPageRoute(
+  Navigator.push(context,MaterialPageRoute(
+  builder: (BuildContext context)=>
+  Group(text: null,),
+  ));//  Navigator.push(context, MaterialPageRoute(
 //  builder: (BuildContext context) => MyApp1(text:null),
 //  ));
   },
@@ -106,127 +112,127 @@ class _GrpRegState extends State<GrpReg> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-      child: ListView(
-        children: <Widget>[
-          //GroupId
-          TextFormField(
-            autovalidate: true,
-            controller: gid,
-            decoration: InputDecoration(
-              labelText: 'Group ID',
-              hintText: 'Enter the Group ID',
-            ),
-            validator: (gid){
-              gid.isEmpty?'Please enter the  Group ID!':null;
-            },
-          ),
+  return Scaffold(
+  body: Form(
+  key: _formKey,
+  child: ListView(
+  children: <Widget>[
+  //GroupId
+  TextFormField(
+  autovalidate: true,
+  controller: gid,
+  decoration: InputDecoration(
+  labelText: 'Group ID',
+  hintText: 'Enter the Group ID',
+  ),
+  validator: (gid){
+  gid.isEmpty?'Please enter the  Group ID!':null;
+  },
+  ),
 
-          //GroupName
-          TextFormField(
-            autovalidate: true,
-            controller: gname,
-            decoration: InputDecoration(
-              labelText: 'Group Name',
-              hintText: 'Enter the Group Name',
-            ),
-            validator: (gname){
-              gname.isEmpty?'Please enter the  Group Name!':null;
-            },
-          ),
-          //RegNumber
-          TextFormField(
-            autovalidate: true,
-            controller: regno,
-            decoration: InputDecoration(
-              labelText: 'Registration Number',
-              hintText: 'Enter the registration number',
-            ),
-            validator: (regno){
-              regno.isEmpty?'Please enter the registration number!':null;
-            },
-          ),
-          //Panchayath
-          TextFormField(
-            autovalidate: true,
-            controller: panchayath,
-            decoration: InputDecoration(
-              labelText: 'Panchayath/Muncipality',
-              hintText: 'Enter the panchayath/muncipality',),
-            validator: (panchayath){
-              panchayath.isEmpty?'Please enter panchayath/muncipality! ':null;
-            },
-          ),
-          //District
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0)
-            ),
-            child: DropdownButton(value:district,items: _district
-                .map((value)=>DropdownMenuItem(
-                  child:Text(value),
-                    value: value,
-            ),).toList(),
-                onChanged: (String value){
-                  district=value;
-                  setState(() {});
-            },
-              hint: Text('Select the district'),
-                ),
-          ),
-          //taluk
-          TextFormField(
-            autovalidate: true,
-            controller: taluk,
-            decoration: InputDecoration(
-              labelText: 'Taluk',
-              hintText: 'Enter the taluk',
-            ),
-            validator: (taluk){
-              taluk.isEmpty?'Please enter the taluk!':null;
-            },
-          ),
-          //block
-          TextFormField(
-            autovalidate: true,
-            controller: block,
-            decoration: InputDecoration(
-              labelText: 'Block',
-              hintText: 'Enter the block',
-            ),
-            validator: (block){
-              block.isEmpty?'Please enter the block!':null;
-            },
-          ),
-          //ward
-          TextFormField(
-            autovalidate: true,
-            controller: ward,
-            decoration: InputDecoration(
-              labelText: 'Ward',
-              hintText: 'Enter the ward',
-            ),
-            validator: (ward){
-              ward.isEmpty?'Please enter the ward!':null;
-            },
-          ),
-          RaisedButton(child: Text('Register'),
-          onPressed: (){
-            setState(() {
-              if(_formKey.currentState.validate())
-                {
-                  _ackAlert(context);
-                }
-              else {
-                showInSnackBar(
-                    'Please fix the errors in red before submitting.');
-              }
-            });
-          },)
-        ],
-      )),
-    );
+  //GroupName
+  TextFormField(
+  autovalidate: true,
+  controller: gname,
+  decoration: InputDecoration(
+  labelText: 'Group Name',
+  hintText: 'Enter the Group Name',
+  ),
+  validator: (gname){
+  gname.isEmpty?'Please enter the  Group Name!':null;
+  },
+  ),
+  //RegNumber
+  TextFormField(
+  autovalidate: true,
+  controller: regno,
+  decoration: InputDecoration(
+  labelText: 'Registration Number',
+  hintText: 'Enter the registration number',
+  ),
+  validator: (regno){
+  regno.isEmpty?'Please enter the registration number!':null;
+  },
+  ),
+  //Panchayath
+  TextFormField(
+  autovalidate: true,
+  controller: panchayath,
+  decoration: InputDecoration(
+  labelText: 'Panchayath/Muncipality',
+  hintText: 'Enter the panchayath/muncipality',),
+  validator: (panchayath){
+  panchayath.isEmpty?'Please enter panchayath/muncipality! ':null;
+  },
+  ),
+  //District
+  Container(
+  decoration: BoxDecoration(
+  borderRadius: BorderRadius.circular(10.0)
+  ),
+  child: DropdownButton(value:district,items: _district
+      .map((value)=>DropdownMenuItem(
+  child:Text(value),
+  value: value,
+  ),).toList(),
+  onChanged: (String value){
+  district=value;
+  setState(() {});
+  },
+  hint: Text('Select the district'),
+  ),
+  ),
+  //taluk
+  TextFormField(
+  autovalidate: true,
+  controller: taluk,
+  decoration: InputDecoration(
+  labelText: 'Taluk',
+  hintText: 'Enter the taluk',
+  ),
+  validator: (taluk){
+  taluk.isEmpty?'Please enter the taluk!':null;
+  },
+  ),
+  //block
+  TextFormField(
+  autovalidate: true,
+  controller: block,
+  decoration: InputDecoration(
+  labelText: 'Block',
+  hintText: 'Enter the block',
+  ),
+  validator: (block){
+  block.isEmpty?'Please enter the block!':null;
+  },
+  ),
+  //ward
+  TextFormField(
+  autovalidate: true,
+  controller: ward,
+  decoration: InputDecoration(
+  labelText: 'Ward',
+  hintText: 'Enter the ward',
+  ),
+  validator: (ward){
+  ward.isEmpty?'Please enter the ward!':null;
+  },
+  ),
+  RaisedButton(child: Text('Register'),
+  onPressed: (){
+  setState(() {
+  if(_formKey.currentState.validate())
+  {
+  _ackAlert(context);
+  }
+  else {
+  showInSnackBar(
+  'Please fix the errors in red before submitting.');
+  }
+  });
+  },)
+  ],
+  )),
+  );
   }
 }
